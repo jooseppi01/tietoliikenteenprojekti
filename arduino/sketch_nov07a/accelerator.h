@@ -1,5 +1,6 @@
 #ifndef ACCELERATOR_H
 #define ACCELERATOR_H
+#include <arduino.h>
 
 //#include "messaging.h"
 
@@ -12,7 +13,6 @@ struct Measurement
 };
 
 
-
 class Accelerator
 {
 public:
@@ -20,10 +20,8 @@ public:
   ~Accelerator();
   void makeMeasurement();
   Measurement getMeasurement();
-  void tulostus();
 
 private:
-
   Measurement m;
  
 };
