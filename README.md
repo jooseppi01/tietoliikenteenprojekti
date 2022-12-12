@@ -13,15 +13,47 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä
   width=50% height=50%>
 </picture>
 
----------------------------------------------------------------------------------------------------------
- ##### Aluksi testailua testidatalla, jossa data näkyy sinisinä palloina ja algortimin laskemat keskipisteet näkyy punaisina * merkkeinä. Algoritmi on toteutettu siten että k-means = 4, eli data luokitellaa neljään eri joukkoon. 
+---
+
+k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipisteet eivät enää muutu.
+```
+ while iterations == True:
+        prev_counts = counts 
+        counts = np.zeros(4)         
+        centerPoinCumulativeSum = np.zeros((4, 3))
+        distances = np.zeros(4)
+        whileloopcounter += 1                    
+        
+        for i in range(len(data)):
+                for a in range(4):
+                        distances[a] = distance(data[i], keskipiste[a])
+                counts[np.argmin(distances)] = counts[np.argmin(distances)] + 1
+                centerPoinCumulativeSum[np.argmin(distances)] = centerPoinCumulativeSum[np.argmin(distances)] + data[i]
+
+        for i in range(4):
+                if(counts[i] == 0):
+                        keskipiste[i] = random.randint(minValue, maxValue)
+                else:
+                        keskipiste[i] = centerPoinCumulativeSum[i] / counts[i]
+
+        if counts[0] == prev_counts[0] and counts[1] == prev_counts[1] and counts[2] == prev_counts[2]:
+                counter += 1
+        else:
+                counter = 0
+
+        if counter == iterations_without_change:
+                iterations = False
+```
+
+
+- Aluksi testailua testidatalla, jotta voidaan varmistua algoritmin toimivuudesta. Vaaleat ympyrät kuvaavat 40 pisteen testidataa, mustat rastit kuvaava opetetun algoritmin lopulliset clusterit. 4-means ->
 <picture>
   <img alt="Shows an picture of kmeans_testidata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/testidata_kmeans.png?raw=true"
      width=50% height=50%>
 </picture>
 
-----------------------------------------------------------------------------------------------------------
-##### Tässä sama homma, mutta omalla datalla. Siniset pallot ovat dataa kiihtyvyysanturilta, punaiset * ovat algoritmin laskemat keskipisteet. 
+---
+- Seuraavaksi haetaan oman kiihtyvyysanturin mittaukset mysql tietokannasta ja opetetaan se kmeans algoritmilla. Vihreät ympyrät ovat dataa, rastit ovat algoritmin laskemat clusterit. 4-means->
 <picture>
   <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/omadata_kmeans.png?raw=true"
   width=50% height=50%>
