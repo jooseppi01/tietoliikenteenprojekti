@@ -9,21 +9,21 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä
 
 ## Arkkitehtuurikuva
 <picture>
-  <img alt="Shows an picture of arkkitehtuuri." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/arkkitehtuuri.png"
+  <img alt="Shows an picture of arkkitehtuuri." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/1483fb82f5a4360c1cb069b78ebe5500e72e1c45/pictures/arkkitehtuuri.png"
   width=50% height=50%>
 </picture>
 
 ---------------------------------------------------------------------------------------------------------
  ##### Aluksi testailua testidatalla, jossa data näkyy sinisinä palloina ja algortimin laskemat keskipisteet näkyy punaisina * merkkeinä. Algoritmi on toteutettu siten että k-means = 4, eli data luokitellaa neljään eri joukkoon. 
 <picture>
-  <img alt="Shows an picture of kmeans_testidata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/2f598286eb5b4ce3854a263f0e1678e7273f81e0/kmeans_testidata.png"
+  <img alt="Shows an picture of kmeans_testidata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/testidata_kmeans.png?raw=true"
      width=50% height=50%>
 </picture>
 
 ----------------------------------------------------------------------------------------------------------
 ##### Tässä sama homma, mutta omalla datalla. Siniset pallot ovat dataa kiihtyvyysanturilta, punaiset * ovat algoritmin laskemat keskipisteet. 
 <picture>
-  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/kmeans_omadata.png"
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/omadata_kmeans.png?raw=true"
   width=50% height=50%>
 </picture>
 
