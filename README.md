@@ -14,6 +14,15 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä
 </picture>
 
 ---
+- Kytketään koekytkentälevyyn kiihtyvyysanturi, lähetin ja vastaanotin.
+<picture>
+  <img alt="Shows an picture of setup." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/841a0662e337c5b6c53a49d1fb09349b78cb665e/pictures/setupkuva.jpg"
+  width=50% height=50%>
+</picture>
+
+
+
+
 
 k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipisteet eivät enää muutu.
 ```
