@@ -6,7 +6,7 @@ Tietoliikennelabrassa on IoT-reititin (Raspberry Pi), joka on Oamkin kampusverko
 
 Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä dataa haetaan rajanpinnasta omaan kannettavaan koodatulla ohjelmalla ja käsitellään koneoppimistarkoitukseen.
 
-Projektiin sisältyi myös hieman linux askarteluja esim. php sriptin tekeminen ymsyms. Löytyy kansioista linux_jutut.
+Projektiin sisältyi myös hieman linux askarteluja -> php sriptin tekeminen ja firewall. Löytyy kansioista linux_jutut.
 
 
 ## Arkkitehtuurikuva
