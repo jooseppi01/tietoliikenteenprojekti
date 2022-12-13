@@ -20,9 +20,48 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä
   width=50% height=50%>
 </picture>
 
+- luetaan anturin data ja lähetetään se tietokantaan käyttäen highbyteä ja lowbyteä: 
+```
+void Accelerator::makeMeasurement()
+{ 
+  m.x = analogRead(A1); 
+  m.y = analogRead(A2); 
+  m.z = analogRead(A3);
+}
+```
+```
+void Messaging::createMessage(Measurement m)
+{
+  data[0]=highByte(m.x);
+  data[1]=lowByte(m.x);
 
+  data[2]=highByte(m.y);
+  data[3]=lowByte(m.y);
 
+  data[4]=highByte(m.z);
+  data[5]=lowByte(m.z);
+  messageLength = 6;
+}
+```
+- Kuva tietokannasta joka sisältää:
+id,
+timestamp,
+groupid,
+from_mac,
+to_mac,
+sensorvalue_a,
+sensorvalue_b,
+sensorvalue_c,
+sensorvalue_d,
+sensorvalue_e,
+sensorvalue_f 
 
+<picture>
+  <img alt="Shows an picture of setup." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/tietokanta.png"
+  width=50% height=50%>
+</picture>
+
+---
 
 k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipisteet eivät enää muutu.
 ```
@@ -62,10 +101,66 @@ k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipiste
 </picture>
 
 ---
-- Seuraavaksi haetaan oman kiihtyvyysanturin mittaukset mysql tietokannasta ja opetetaan se kmeans algoritmilla. Vihreät ympyrät ovat dataa, rastit ovat algoritmin laskemat clusterit. 4-means->
+- Seuraavaksi haetaan oman kiihtyvyysanturin mittaukset mysql tietokannasta ja luokitellaaan se kmeans algoritmilla 4 luokkaan. Jokaisella luokalla on oma värinsä. 
+```
+import mysql.connector
+connection = mysql.connector.connect(host='172.20.241.9',
+                                         database='measurements',
+                                         user='dbaccess_ro',
+                                         password='vsdjkvwselkvwe234wv234vsdfas')
+if connection.is_connected():
+        db_Info = connection.get_server_info()
+        print("Connected to MySQL Server version ", db_Info)
+        mycursor = connection.cursor()
+        mycursor.execute("SELECT * FROM rawdata WHERE groupid = 61")       
+        myresult = mycursor.fetchall()
+```
+
 <picture>
-  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/omadata_kmeans.png?raw=true"
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/41f3a2663d1027b56d87ff6eff95de8e1c77ced4/pictures/kmeans_vareilla.png"
   width=50% height=50%>
 </picture>
 
+Python ohjelman lopuksi tallennetaan keskipisteet tiedostoon keskipisteet.h ja tämä tiedosto sitten incluudataan arduinolle.
 
+---
+
+
+```
+void loop() {
+
+  Serial.println("asento 1, 2, 3 vai 4?");
+  while (Serial.available() == 0) {
+  }
+  int asento = Serial.parseInt();
+
+  Serial.println("kuinka monta mittausta?");
+  while (Serial.available() == 0) {
+  }
+  int luku = Serial.parseInt(); 
+```
+
+- Vasemmat arvo on se asento missä kiihtyvyysanturi on ja oikeat arvot ovat algortimin antamat. Tehdään 20 mittausta jokaisesta asennosta.  
+<picture>
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/arduinoserialport.png"
+  width=30% height=30%>
+</picture>
+
+---
+
+- Tehdään confusion matrix, jokaisesta kiihtyvyys anturin asennosta on tehty 20 mittausta eli yhteensä 80 mittausta. Aika tarkasti saadaan oikeat arvot vaikka anturia vähän heiluttelikin mittausten aikana. 
+```
+#data tallennettu arduinolta putty2.log nimiseen tiedostoon.
+data = np.loadtxt("putty2.log")
+y_test = data[:, 0]
+y_pred = data[:, 1]
+
+kk = confusion_matrix(y_test, y_pred)
+display3 = metrics.ConfusionMatrixDisplay(confusion_matrix = kk, display_labels = ['p1', 'p2', 'p3', 'p4'])
+display3.plot()
+```
+
+<picture>
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/cofusionmatrix.png"
+  width=50% height=50%>
+</picture>
