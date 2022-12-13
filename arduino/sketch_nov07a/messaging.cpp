@@ -21,11 +21,12 @@ void Messaging::createMessage(Measurement m)
   data[0]=highByte(m.x);
   data[1]=lowByte(m.x);
 
-  data[0]=highByte(m.y);
-  data[1]=lowByte(m.y);
+  data[2]=highByte(m.y);
+  data[3]=lowByte(m.y);
 
-  data[0]=highByte(m.z);
-  data[1]=lowByte(m.z);
+  data[4]=highByte(m.z);
+  data[5]=lowByte(m.z);
+  messageLength = 6;
 }
 bool Messaging::sendMessage(uint8_t id, uint8_t flags)
 {
@@ -45,6 +46,14 @@ bool Messaging::sendMessage(uint8_t id, uint8_t flags)
      pmanager->setHeaderFlags(flags);
      
      bool returnValue = false;
+     Serial.println(data[0]);
+     Serial.println(data[1]);
+     
+     Serial.println(data[2]);
+     Serial.println(data[3]);
+     
+     Serial.println(data[4]);
+     Serial.println(data[5]);
   
      if (pmanager->sendto(data, messageLength, RECEIVER_ADDRESS))
      {
