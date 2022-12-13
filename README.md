@@ -120,7 +120,7 @@ if connection.is_connected():
 
 <picture>
   <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/41f3a2663d1027b56d87ff6eff95de8e1c77ced4/pictures/kmeans_vareilla.png"
-  width=50% height=50%>
+  width=60% height=60%>
 </picture>
 
 Python ohjelman lopuksi tallennetaan keskipisteet tiedostoon keskipisteet.h ja tämä tiedosto sitten incluudataan arduinolle.
