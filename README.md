@@ -96,7 +96,7 @@ k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipiste
 ```
 
 
-- Aluksi testailua testidatalla, jotta voidaan varmistua algoritmin toimivuudesta. Vaaleat ympyrät kuvaavat 40 pisteen testidataa, mustat rastit kuvaava opetetun algoritmin lopulliset clusterit. 4-means ->
+- Aluksi testailua testidatalla, jotta voidaan varmistua algoritmin toimivuudesta. Vaaleat ympyrät kuvaavat 40 pisteen testidataa, mustat rastit ovat klustereiden lopulliset keskipisteet. 4-means ->
 <picture>
   <img alt="Shows an picture of kmeans_testidata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/testidata_kmeans.png?raw=true"
      width=50% height=50%>
@@ -127,22 +127,7 @@ Python ohjelman lopuksi tallennetaan keskipisteet tiedostoon keskipisteet.h ja t
 
 ---
 
-
-```
-void loop() {
-
-  Serial.println("asento 1, 2, 3 vai 4?");
-  while (Serial.available() == 0) {
-  }
-  int asento = Serial.parseInt();
-
-  Serial.println("kuinka monta mittausta?");
-  while (Serial.available() == 0) {
-  }
-  int luku = Serial.parseInt(); 
-```
-
-- Vasemmat arvo on se asento missä kiihtyvyysanturi on ja oikeat arvot ovat algortimin antamat. Tehdään 20 mittausta jokaisesta asennosta.  
+- Koodaillaan arduinolle ohjelma joka mittaa arvot jotta saadaan confusion matrix tehtyä. Tässä esimerkissä valitsin asennoksi 1 ja mittausten määräksi 3. Vasemmat arvo on se asento missä kiihtyvyysanturi on eli se minkä asennon valitisin ja oikeat arvot ovat algortimin antama asento. Tehdään 100 mittausta jokaisesta asennosta.  
 <picture>
   <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/arduinoserialport.png"
   width=30% height=30%>
@@ -150,10 +135,11 @@ void loop() {
 
 ---
 
-- Tehdään confusion matrix, jokaisesta kiihtyvyys anturin asennosta on tehty 20 mittausta eli yhteensä 80 mittausta. Aika tarkasti saadaan oikeat arvot vaikka anturia vähän heiluttelikin mittausten aikana. 
+- Tehdään confusion matrix. Jokaisesta kiihtyvyys anturin asennosta on tehty 100 mittausta eli yhteensä 400 mittausta. Aika tarkasti saadaan oikeat arvot vaikka anturia vähän heiluttelikin mittausten aikana. 
 ```
-#data tallennettu arduinolta putty2.log nimiseen tiedostoon.
-data = np.loadtxt("putty2.log")
+#data tallennettu arduinolta putty3.log nimiseen tiedostoon.
+data = np.loadtxt("putty3.log")
+
 y_test = data[:, 0]
 y_pred = data[:, 1]
 
@@ -163,6 +149,11 @@ display3.plot()
 ```
 
 <picture>
-  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/cofusionmatrix.png"
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/27a32628d76fc6075fb20d3f9df9cdb4ae9cbeb3/pictures/confusionmatrix2.png"
+  width=50% height=50%>
+</picture>
+
+<picture>
+  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/27a32628d76fc6075fb20d3f9df9cdb4ae9cbeb3/pictures/score.png"
   width=50% height=50%>
 </picture>
