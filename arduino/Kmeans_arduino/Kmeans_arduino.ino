@@ -82,21 +82,7 @@ void loop() {
       Serial.print (asento);
       Serial.print (" 4");
       Serial.print("\n");    }
-      delay(250);
+      delay(100);
   }
   
  }
-
-
-  /*
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 3; j++) {
-      // print the value of kp[i][j] followed by a tab
-      Serial.print(kp[i][j]);
-      Serial.print("\t");
-    }
-    // after printing the values in the inner loop, print a newline
-    Serial.println();
-  }
-  delay(1000);  // delay for 1 second
-  */ 
