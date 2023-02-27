@@ -4,7 +4,9 @@
 Projektin aihe:
 Tietoliikennelabrassa on IoT-reititin (Raspberry Pi), joka on Oamkin kampusverkossa. Tehtävänä on koodata Arduinolle client, joka mittaa kiihtyvyysanturin dataa ja välittää tietoa langattomasti IoT-reitittimelle valmiiksi annetun speksin mukaisesti. Reititin on asennettu valmiiksi ja varastoi vastaanotettua dataa MySQL-tietokantaan. 
 
-Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä dataa haetaan rajanpinnasta omaan kannettavaan koodatulla ohjelmalla ja käsitellään koneoppimistarkoitukseen.
+Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja HTTP API. Kerättyä dataa haetaan rajanpinnasta omaan kannettavaan koodatulla ohjelmalla ja käsitellään koneoppimistarkoitukseen. 
+
+Valmiin algoritmin on tarkoitus tunnistaa missä asennossa anturi on milloinkin.
 
 Projektiin sisältyi myös hieman linux askarteluja -> php sriptin tekeminen ja firewall. Löytyy kansioista linux_jutut.
 
@@ -45,27 +47,16 @@ void Messaging::createMessage(Measurement m)
   messageLength = 6;
 }
 ```
-- Kuva tietokannasta joka sisältää:
-id,
-timestamp,
-groupid,
-from_mac,
-to_mac,
-sensorvalue_a,
-sensorvalue_b,
-sensorvalue_c,
-sensorvalue_d,
-sensorvalue_e,
-sensorvalue_f 
 
-<picture>
-  <img alt="Shows an picture of setup." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/tietokanta.png"
-  width=50% height=50%>
-</picture>
 
 ---
 
 k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipisteet eivät enää muutu.
+ 
+ Aluksi arvottiin satunnaiset keskipisteet. Tässä tapaksessa 4. 
+1. lasketaan jokaisen datapisteen etäisyys jokaiseen keskipisteeseen.
+2. Jokaiselle datapisteelle annetaan oma keskipiste, sen perusteella mihin sillä on lyhin matka. Tässä vaiheessa on muodostunut ensimmäiset klusterit.
+3. Sitten jokaiselle klusterille lasketaan uudet keskipisteet.
 ```
  while iterations == True:
         prev_counts = counts 
@@ -96,42 +87,16 @@ k-means algoritmi pythonilla. Algoritmia opetetaan niin kauan, kunnes keskipiste
 ```
 
 
-- Aluksi testailua testidatalla, jotta voidaan varmistua algoritmin toimivuudesta. Vaaleat ympyrät kuvaavat 40 pisteen testidataa, mustat rastit ovat klustereiden lopulliset keskipisteet. 4-means ->
-<picture>
-  <img alt="Shows an picture of kmeans_testidata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/main/pictures/testidata_kmeans.png?raw=true"
-     width=50% height=50%>
-</picture>
 
 ---
 - Seuraavaksi haetaan oman kiihtyvyysanturin mittaukset mysql tietokannasta ja luokitellaaan se kmeans algoritmilla 4 luokkaan. Jokaisella luokalla on oma värinsä. 
-```
-import mysql.connector
-connection = mysql.connector.connect(host='172.20.241.9',
-                                         database='measurements',
-                                         user='dbaccess_ro',
-                                         password='vsdjkvwselkvwe234wv234vsdfas')
-if connection.is_connected():
-        db_Info = connection.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
-        mycursor = connection.cursor()
-        mycursor.execute("SELECT * FROM rawdata WHERE groupid = 61")       
-        myresult = mycursor.fetchall()
-```
+
 
 <picture>
   <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/41f3a2663d1027b56d87ff6eff95de8e1c77ced4/pictures/kmeans_vareilla.png"
   width=60% height=60%>
 </picture>
 
-Python ohjelman lopuksi tallennetaan keskipisteet tiedostoon keskipisteet.h ja tämä tiedosto sitten incluudataan arduinolle.
-
----
-
-- Koodaillaan arduinolle ohjelma joka mittaa arvot jotta saadaan confusion matrix tehtyä. Tässä esimerkissä valitsin asennoksi 1 ja mittausten määräksi 3. Vasemmat arvo on se asento missä kiihtyvyysanturi on eli se minkä asennon valitisin ja oikeat arvot ovat algortimin antama asento. Tehdään 100 mittausta jokaisesta asennosta.  
-<picture>
-  <img alt="Shows an picture of kmeans_omadata." src="https://github.com/jooseppi01/tietoliikenteenprojekti/blob/b24c597ebce4b326edac50f16f48a4f7d9c43837/pictures/arduinoserialport.png"
-  width=30% height=30%>
-</picture>
 
 ---
 
